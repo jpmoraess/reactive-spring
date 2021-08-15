@@ -2,6 +2,7 @@ package br.com.moraesit.fluxandmonotests;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class FluxAndMonoTest {
@@ -66,6 +67,26 @@ public class FluxAndMonoTest {
         StepVerifier.create(stringFlux)
                 .expectNext("João", "Pedro", "Moraes")
                 .expectErrorMessage("Exception....")
+                .verify();
+    }
+
+    /**
+     * Mono
+     */
+
+    @Test
+    public void monoTest() {
+        Mono<String> stringMono = Mono.just("João Pedro");
+
+        StepVerifier.create(stringMono)
+                .expectNext("João Pedro")
+                .verifyComplete();
+    }
+
+    @Test
+    public void monoTestError() {
+        StepVerifier.create(Mono.error(new RuntimeException("Exception...")))
+                .expectError(RuntimeException.class)
                 .verify();
     }
 }
